@@ -18,6 +18,8 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements OnClickListener
 {
 
+    int picNumber = 0; // 0 mean transparent
+
     /**
      * DrawingView drawView - the instance of DrawingView class
      * float smallBrush, mediumBrush, largeBrush
@@ -26,7 +28,7 @@ public class MainActivity extends Activity implements OnClickListener
      */
     private DrawingView drawView;
     private float smallBrush, mediumBrush, largeBrush;
-    private ImageButton currPaint, drawBtn, eraseBtn, newBtn, saveBtn;
+    private ImageButton currPaint, drawBtn, eraseBtn, newBtn, saveBtn, picBtn;
     //need to make this ImageButton
     private Button UndoButton;
 
@@ -67,6 +69,11 @@ public class MainActivity extends Activity implements OnClickListener
 
         UndoButton = (Button) findViewById(R.id.Undo_Button);
         UndoButton.setOnClickListener(this);
+
+        picBtn = (ImageButton)findViewById(R.id.pic_btn);
+        picBtn.setOnClickListener(this);
+
+
     }
 
     /**
@@ -256,6 +263,39 @@ public class MainActivity extends Activity implements OnClickListener
         else if(view.getId() == R.id.Undo_Button) {
             // calls onclickundo
             drawView.OnClickUndo();
+        }
+        else if(view.getId() == R.id.pic_btn){
+
+            if(picNumber == 0)
+            {
+                drawView.setBackgroundResource(R.drawable.aa);
+                picNumber++;
+            }
+            else if(picNumber == 1)
+            {
+                drawView.setBackgroundResource(R.drawable.bb);
+                picNumber++;
+            }
+            else if(picNumber == 2)
+            {
+                drawView.setBackgroundResource(R.drawable.c);
+                picNumber++;
+            }
+            else if(picNumber == 3)
+            {
+                drawView.setBackgroundResource(R.drawable.cc);
+                picNumber++;
+            }
+            else if(picNumber == 4)
+            {
+                drawView.setBackgroundResource(R.drawable.d);
+                picNumber++;
+            }
+            else if(picNumber == 5)
+            {
+                drawView.setBackgroundResource(R.drawable.white);
+                picNumber = 0;
+            }
         }
     }
 }

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
@@ -52,6 +51,15 @@
             android:layout_height="fill_parent"
             android:contentDescription="@string/save"
             android:src="@drawable/save" />
+
+        <ImageButton
+            android:id="@+id/pic_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/back"
+            android:src="@drawable/background" />
+
+
         <!-- canvas dimensions and color,
         background set to no color,
         changed from white: #FFFFFFFF
