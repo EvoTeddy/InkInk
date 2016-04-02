@@ -23,7 +23,12 @@
             android:text="Undo"
             android:contentDescription="Undo Button"/>
 
-        <!-- Make another button for multiply/redo ? -->
+        <Button
+            android:id="@+id/Redo_Button"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text="Redo"
+            android:contentDescription="Redo Button"/>
         <ImageButton
             android:id="@+id/new_btn"
             android:layout_width="wrap_content"

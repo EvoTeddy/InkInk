@@ -33,16 +33,14 @@ public class DrawingView extends View
      * ArrayList<Path> paths
      * LinkedList<Path> undonePaths
      */
-    //drawing path
-    private Path drawPath;
-    //drawing and canvas paint
-    private Paint drawPaint, canvasPaint;
-    //initial color
-    private int paintColor = 0xFF660000;
-    //canvas
-    private Canvas drawCanvas;
-    //canvas bitmap
-    private Bitmap canvasBitmap;
+    private Path drawPath; //drawing path
+    private Paint drawPaint, canvasPaint; //drawing and canvas paint
+
+    private int paintColor = 0xFF660000; //initial color
+
+    private Canvas drawCanvas; //canvas
+
+    private Bitmap canvasBitmap; //canvas bitmap
 
     private float brushSize, lastBrushSize;
     private boolean erase=false;
@@ -81,7 +79,6 @@ public class DrawingView extends View
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
 
-        drawPaint.setStrokeWidth(brushSize);
         //instantiate the Paint object canvasPaint
         //Note:
         //definition of dithering:
@@ -124,9 +121,9 @@ public class DrawingView extends View
     protected void onDraw(Canvas canvas)
     {
         //draws the canvas
-        canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
+        //canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         //draws the drawing path
-// canvas.drawPath(drawPath, drawPaint);
+        //canvas.drawPath(drawPath, drawPaint);
 //draw view
         for(Path p : paths) {
             canvas.drawPath(p, drawPaint);
@@ -153,24 +150,20 @@ public class DrawingView extends View
             //User touches the View.
             //Move to that position to start drawing.
             case MotionEvent.ACTION_DOWN:
-                drawPath.moveTo(touchX, touchY);
+                touch_start(touchX, touchY);
+                invalidate();
                 break;
             //When user moves finger on View,
             //draw the path along their touch
             case MotionEvent.ACTION_MOVE:
-                drawPath.lineTo(touchX, touchY);
+                touch_move(touchX, touchY);
+                invalidate();
                 break;
             //Touch is lifted off View,
             //draw path and reset for next drawing operation.
             case MotionEvent.ACTION_UP:
-                drawCanvas.drawPath(drawPath, drawPaint);
-                //push the path onto the stack
-                if(paths.add(drawPath))
-                {
-                    Toast.makeText(getContext(), "adding", Toast.LENGTH_SHORT).show();
-                }
-
-                drawPath.reset();
+                touch_up();
+                invalidate();
                 break;
             default:
                 return false;
@@ -224,11 +217,44 @@ public class DrawingView extends View
 
     public void OnClickUndo()
     {
-        if(paths.size() != 0) {
-            Path path = paths.remove(paths.size() - 1);
-            undonePaths.add(path);
+        if(paths.size() > 0) {
+            undonePaths.add(paths.remove(paths.size() - 1));
             invalidate();
         }
     }
 
+    public void onClickRedo(){
+        if(undonePaths.size() > 0){
+            paths.add(undonePaths.remove(undonePaths.size()-1));
+            invalidate();
+        }
+    }
+
+    private float mX, mY;
+    private static final float TOUCH_TOLERANCE = 4;
+
+    private void touch_start(float x, float y){
+        undonePaths.clear();
+        drawPath.reset();
+        drawPath.moveTo(x, y);
+        mX = x;
+        mY = y;
+    }
+
+    private void touch_move(float x, float y){
+        float dx = Math.abs(x - mX);
+        float dy = Math.abs(y - mY);
+        if(dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+            drawPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) /2);
+            mX = x;
+            mY = y;
+        }
+    }
+
+    private void touch_up(){
+        drawPath.lineTo(mX, mY);
+        drawCanvas.drawPath(drawPath, drawPaint);
+        paths.add(drawPath);
+        drawPath = new Path();
+    }
 }

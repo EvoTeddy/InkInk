@@ -30,7 +30,7 @@ public class MainActivity extends Activity implements OnClickListener
     private float smallBrush, mediumBrush, largeBrush;
     private ImageButton currPaint, drawBtn, eraseBtn, newBtn, saveBtn, picBtn;
     //need to make this ImageButton
-    private Button UndoButton;
+    private Button UndoButton, RedoButton;
 
     /**
      * Sets initial settings for the app when first start app
@@ -69,6 +69,9 @@ public class MainActivity extends Activity implements OnClickListener
 
         UndoButton = (Button) findViewById(R.id.Undo_Button);
         UndoButton.setOnClickListener(this);
+
+        RedoButton = (Button) findViewById(R.id.Redo_Button);
+        RedoButton.setOnClickListener(this);
 
         picBtn = (ImageButton)findViewById(R.id.pic_btn);
         picBtn.setOnClickListener(this);
@@ -259,10 +262,13 @@ public class MainActivity extends Activity implements OnClickListener
 //respond to clicks
 
         //for clicked UNDO button
-        //TODO: implement undo button
         else if(view.getId() == R.id.Undo_Button) {
-            // calls onclickundo
             drawView.OnClickUndo();
+        }
+
+        //for clicked REDO button
+        else if(view.getId() == R.id.Redo_Button){
+            drawView.onClickRedo();
         }
         else if(view.getId() == R.id.pic_btn){
 
